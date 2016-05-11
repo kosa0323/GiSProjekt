@@ -11,6 +11,7 @@ namespace AlgorytmMrówkowy
         static void Main(string[] args)
         {
 
+            int a;
 
         }
     }
