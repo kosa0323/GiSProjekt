@@ -12,7 +12,7 @@ namespace AlgorytmMrówkowy
     {
         public static void ZapiszDoPliku(double[,] graf, string nazwaPliku)
         {
-            using (FileStream fs = new FileStream(@"C:\grafy\" + nazwaPliku + ".txt", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (FileStream fs = new FileStream(nazwaPliku + ".txt", FileMode.OpenOrCreate, FileAccess.ReadWrite))
             using (StreamWriter sw = new StreamWriter(fs))
             {
                 sw.WriteLine("# liczba wierzchołków, wierchołki numerowane sa od 0");
@@ -35,7 +35,7 @@ namespace AlgorytmMrówkowy
         public static double[,] OdczytajZPliku(string nazwaPliku)
         {
             double[,] graf;
-            using (FileStream fs = new FileStream(@"C:\grafy\" + nazwaPliku + ".txt", FileMode.Open))
+            using (FileStream fs = new FileStream(nazwaPliku + ".txt", FileMode.Open))
             using (StreamReader sr = new StreamReader(fs))
             {
 

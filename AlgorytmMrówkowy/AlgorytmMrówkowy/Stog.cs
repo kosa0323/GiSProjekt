@@ -8,31 +8,31 @@ namespace AlgorytmMrówkowy
 {
     class Stog
     {
-        private IList<int> data;
+        private IList<Sciezka> data;
         public int HeapSize;
 
         public Stog()
         {
-            data = new List<int>();
+            data = new List<Sciezka>();
             //dodaję zerowy element ponieważ zaczynamy wypełniać tablicę od indeksu 1
-            data.Add(0);
+            data.Add(new Sciezka() { koszt = 0, listaWierzcholkow = null});
         }
 
         private void Swap(int index0, int index1)
         {
-            int aux = data[index0];
+            Sciezka aux = data[index0];
             data[index0] = data[index1];
             data[index1] = aux;
         }
 
-        public void Insert(int n)
+        public void Insert(Sciezka n)
         {
             HeapSize++;
             data.Add(n);
             int Index = HeapSize;
             while (Index > 1)
             {
-                if (n > data[Index / 2]) Swap(Index, Index / 2);
+                if (n.CompareTo(data[Index / 2]) == 1) Swap(Index, Index / 2); //n > data...
                 else break;
                 Index = Index / 2;
             }
@@ -41,15 +41,15 @@ namespace AlgorytmMrówkowy
         public void MoveDownHeap(int topIndex)
         {
             int index = topIndex;
-            int n = data[topIndex];
+            Sciezka n = data[topIndex];
             while (index * 2 <= HeapSize)
             {
                 int indexGreater;
-                if ((index * 2 < HeapSize) && (data[index * 2 + 1] > data[index * 2]))
+                if ((index * 2 < HeapSize) && (data[index * 2 + 1].CompareTo(data[index * 2]) == 1)) //>
                     indexGreater = index * 2 + 1;
                 else
                     indexGreater = index * 2;
-                if (n < data[indexGreater])
+                if (n.CompareTo(data[indexGreater]) == -1) // <
                     Swap(index, indexGreater);
                 else break;
                 index = indexGreater;
@@ -75,12 +75,12 @@ namespace AlgorytmMrówkowy
         {
             for (int i = 1; i <= HeapSize / 2; i++)
             {
-                if (data[i] < data[2 * i]) throw new Exception("Error in Heap");
+                if (data[i].CompareTo(data[2 * i]) == -1) throw new Exception("Error in Heap"); // <
                 if (2 * i + 1 <= HeapSize)
-                    if (data[i] < data[2 * i + 1]) throw new Exception("Error in Heap");
+                    if (data[i].CompareTo(data[2 * i + 1]) == -1) throw new Exception("Error in Heap"); // <
             }
         }
-        public int Max()
+        public Sciezka Max()
         {
             return data[1];
         }

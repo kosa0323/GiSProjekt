@@ -8,7 +8,8 @@ namespace AlgorytmMrówkowy
 {
     class AlgorytmMrówkowy
     {
-        public void Wykonaj()
+        
+        public void Wykonaj(int liczbaMrowek)
         {
             
         }
