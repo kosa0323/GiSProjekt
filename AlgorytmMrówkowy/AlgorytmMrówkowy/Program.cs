@@ -28,7 +28,7 @@ namespace AlgorytmMrówkowy
             double[,] grafKońcowy2 = new double[20, 20];
             grafKońcowy = Generator.GenerujGraf(20, 3, grafPoczątkowy, 0, 20);
             ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba");
-            ModułObsługiPlików.OdczytajZPliku("próba");*/
+            ModułObsługiPlików.OdczytajZPliku("próba");
 
 
             Stog s = new Stog();
@@ -38,7 +38,10 @@ namespace AlgorytmMrówkowy
             s.Insert(new Sciezka() { koszt = 3, listaWierzcholkow = new List<int>() });
             s.Insert(new Sciezka() { koszt = 32, listaWierzcholkow = new List<int>() });
             s.Insert(new Sciezka() { koszt = 321, listaWierzcholkow = new List<int>() });
-            s.Insert(new Sciezka() { koszt = 77, listaWierzcholkow = new List<int>() });
+            s.Insert(new Sciezka() { koszt = 77, listaWierzcholkow = new List<int>() });*/
+
+
+
         }
     }
 }
