@@ -10,6 +10,7 @@ namespace AlgorytmMrówkowy
     {
         public double stezenieFeromonu;
         public double wagaLacza;
+        //Klasa opisująca stan łącza.
         public Info(double stezenie)
         {
             this.stezenieFeromonu = stezenie;
@@ -22,6 +23,9 @@ namespace AlgorytmMrówkowy
             this.wagaLacza = waga;
         }
     }
+    /// <summary>
+    /// Klasa do opisu sąsiednich wierzchołków.
+    /// </summary>
     class PrawdPlusWezel
     {
         public double prawdopodobienstwo;
@@ -71,43 +75,110 @@ namespace AlgorytmMrówkowy
                 }
 
             //Zbior sciezek w danej iteracji
-            Stog zbiorSciezek;
-            Sciezka najlepszaGlobalnaSciezka;
+            Stog zbiorSciezek; //Zbiór ścieżek z jednej iteracji.
+            Stog najlepszeGlobalnieSciezki = new Stog();
             int licznik = 0;
             int wezel;
             Sciezka tmp;
             List<int> tabuList;
             List<PrawdPlusWezel> zbiorSasiadow;
+            Random rr = new Random();
             do
             {
 
                 zbiorSciezek = new Stog();
-                tabuList = new List<int>();
-                zbiorSasiadow = new List<PrawdPlusWezel>();
-                Random rr = new Random();
                 double r = 0, sumaR = 0;
+
+                #region Dla każdej mrówki znajdź scieżkę
                 for (int i = 0; i < n; i++)
                 {
                     wezel = wezelStartowy;
                     tmp = new Sciezka();
-
-                    for(int j = 0; j < wymiarMacierzyBok; j++)
+                    tmp.listaWierzcholkow.Add(wezelStartowy);
+                    tabuList = new List<int>();
+                    zbiorSasiadow = new List<PrawdPlusWezel>();
+                    //Wybór ścieżki dla konkretnej mrówki.
+                    do
                     {
-                        if(infoSiec[wezel, j].wagaLacza != 0 && !tabuList.Contains(j))
+                        // Obliczenie prawdopodobieństw przejść do sąsiednich wierzchołków.
+                        for (int j = 0; j < wymiarMacierzyBok; j++)
                         {
-                            r = Math.Pow(infoSiec[wezel, j].stezenieFeromonu, alfa) * Math.Pow(infoSiec[wezel, j].wagaLacza, beta);
-                            zbiorSasiadow.Add(new PrawdPlusWezel() { prawdopodobienstwo = r, nrWezla = j});
-                            sumaR += r;
+                            if (infoSiec[wezel, j].wagaLacza != 0 && !tabuList.Contains(j))
+                            {
+                                r = Math.Pow(infoSiec[wezel, j].stezenieFeromonu, alfa) * Math.Pow(1/(infoSiec[wezel, j].wagaLacza), beta); //Równanie 2 bez dzielenia przez sumę.
+                                zbiorSasiadow.Add(new PrawdPlusWezel() { prawdopodobienstwo = r, nrWezla = j });
+                                sumaR += r;
+                            }
+                        }
+                        foreach (PrawdPlusWezel p in zbiorSasiadow)
+                            p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR; // Dokończenie Równania nr 2.
+
+                        
+                        
+                        double poprz = 0;
+                        // Losowanie liczby z przedziału (0, 1) o rozkładdzie jednostajnym
+                        r = rr.NextDouble();
+                        // Wybór kolejnego wierzchołka.
+                        foreach (PrawdPlusWezel p in zbiorSasiadow)
+                        {
+                            //p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR;
+                            if (r >= poprz && r < p.prawdopodobienstwo)
+                            {
+                                tmp.listaWierzcholkow.Add(p.nrWezla); //Jeśli wylosowano ten wierzchołek to dodajmy go do ścieżki.
+                                tmp.koszt += infoSiec[wezel, p.nrWezla].wagaLacza;
+                                wezel = p.nrWezla;
+                                tabuList.Add(wezel);
+                                break;
+                            }
+                            poprz = p.prawdopodobienstwo;
+                        }
+                    } while (wezel != wezelKoncowy);
+
+                    //Dodanie ścieżki do stogu.
+                    zbiorSciezek.Insert(tmp);
+                }
+                #endregion
+
+                //Dodaję każde najlepsze rozwiązanie z iteracji do najlepszych globalnych rozwiązań.
+                najlepszeGlobalnieSciezki.Insert(zbiorSciezek.Max());
+
+                //Aktualizacja stężenia feromonów.
+                double noweStezenie = 0;
+                if (licznik == fLambda)
+                {
+                    Sciezka s = najlepszeGlobalnieSciezki.Max();
+                    for(int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
+                    {
+                        noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
+                        infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                    }
+                }
+                else
+                {
+                    Sciezka s = zbiorSciezek.Max();
+                    for (int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
+                    {
+                        noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
+                        infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                    }
+                }
+
+                //Stężenie feromonów musi zawierać się w określonych granicach.
+                for (int i = 0; i < infoSiec.GetLength(1); i++)
+                    for (int j = 0; j < infoSiec.GetLength(2); j++)
+                    {
+                        if(infoSiec[i, j].stezenieFeromonu < tałMin)
+                        {
+                            infoSiec[i, j].stezenieFeromonu = tałMin;
+                        }
+                        else if (infoSiec[i, j].stezenieFeromonu > tałMax)
+                        {
+                            infoSiec[i, j].stezenieFeromonu = tałMax;
                         }
                     }
-                    foreach (PrawdPlusWezel p in zbiorSasiadow)
-                        p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR;
 
-
-
-                    r = rr.NextDouble();
-
-                }
+                tałMax = (1 / (1 - ro)) * (1 / najlepszeGlobalnieSciezki.Max().koszt); // Równanie 10.
+                tałMin = (tałMax * (1 - (Math.Sqrt(pDaszkiem)) * n)) / ((n/2 - 1) * (Math.Sqrt(pDaszkiem)) * n); //Równanie 11.
 
                 licznik++;
             } while (licznik < liczbaIteracji);
@@ -115,12 +186,5 @@ namespace AlgorytmMrówkowy
 
         }
 
-        public static double funkcjaHeurystyczna()
-        {
-            double wsp = 0.5;
-
-
-            return wsp;
-        }
     }
 }
