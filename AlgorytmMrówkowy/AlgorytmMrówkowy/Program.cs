@@ -24,11 +24,12 @@ namespace AlgorytmMrówkowy
                     }
                 }
             }
-            double[,] grafKońcowy = new double[20, 20];
-            double[,] grafKońcowy2 = new double[20, 20];
-            grafKońcowy = Generator.GenerujGraf(20, 3, grafPoczątkowy, 0, 20);
-            ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba");
-            ModułObsługiPlików.OdczytajZPliku("próba");
+            //double[,] grafKońcowy = new double[20, 20];
+            //double[,] grafKońcowy2 = new double[20, 20];
+            //grafKońcowy = Generator.GenerujGraf(20, 3, grafPoczątkowy, 0, 20);
+           // ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba");
+    double[,] graf=        ModułObsługiPlików.OdczytajZPliku("graf");
+            AlgorytmDijkstry.wykonajAlgorytm(graf,0,9);
         }
     }
 }
