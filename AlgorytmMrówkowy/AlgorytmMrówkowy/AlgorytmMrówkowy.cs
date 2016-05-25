@@ -65,14 +65,14 @@ namespace AlgorytmMrówkowy
                                             double epsilon,
                                             double wspolczynnikRownania5)
         {
-            int wymiarMacierzyDol = grafWejsciowy.GetLength(1);
-            int wymiarMacierzyBok = grafWejsciowy.GetLength(2);
+            int wymiarMacierzyDol = grafWejsciowy.GetLength(0);
+            int wymiarMacierzyBok = grafWejsciowy.GetLength(1);
             //Tablica przechowująca informacje o grafie
             Info[,] infoSiec = new Info[wymiarMacierzyDol, wymiarMacierzyBok];
 
 
             for (int i = 0; i < grafWejsciowy.GetLength(1); i++)
-                for (int j = 0; j < grafWejsciowy.GetLength(2); j++)
+                for (int j = 0; j < grafWejsciowy.GetLength(1); j++)
                 {
                     infoSiec[i, j].stezenieFeromonu = tałMax;
                     infoSiec[i, j].wagaLacza = grafWejsciowy[i, j];
@@ -102,8 +102,8 @@ namespace AlgorytmMrówkowy
 
                 liczIncydZWarun = 0;
 
-                for (int i = 0; i < infoSiec.GetLength(1); i++)
-                    for (int j = 0; j < infoSiec.GetLength(2); j++)
+                for (int i = 0; i < infoSiec.GetLength(0); i++)
+                    for (int j = 0; j < infoSiec.GetLength(1); j++)
                     {
                         if (infoSiec[i, j].wagaLacza != 0)
                         {
@@ -116,7 +116,7 @@ namespace AlgorytmMrówkowy
 
                 for (int i = 0; i < infoSiec.GetLength(1); i++)
                 {
-                    for (int j = 0; j < infoSiec.GetLength(2); j++)
+                    for (int j = 0; j < infoSiec.GetLength(1); j++)
                     {
                         if (infoSiec[i, j].wagaLacza != 0 && infoSiec[i, j].stezenieFeromonu > pomLambda * (pomMaxTał[i] - pomMinTał[i]) + pomMinTał[i])
                         {
@@ -131,7 +131,7 @@ namespace AlgorytmMrówkowy
                 {
                     czyStagnacja = true;
                     for (int i = 0; i < infoSiec.GetLength(1); i++)
-                        for (int j = 0; j < infoSiec.GetLength(2); j++)
+                        for (int j = 0; j < infoSiec.GetLength(1); j++)
                         {
                             deltaTał = (tałMax - infoSiec[i, j].stezenieFeromonu) * wspolczynnikRownania5;
                             tablica[i, j] = infoSiec[i, j].stezenieFeromonu + deltaTał;
@@ -216,7 +216,7 @@ namespace AlgorytmMrówkowy
 
                     //Stężenie feromonów musi zawierać się w określonych granicach.
                     for (int i = 0; i < infoSiec.GetLength(1); i++)
-                        for (int j = 0; j < infoSiec.GetLength(2); j++)
+                        for (int j = 0; j < infoSiec.GetLength(1); j++)
                         {
                             if (infoSiec[i, j].stezenieFeromonu < tałMin)
                             {

@@ -30,15 +30,17 @@ namespace AlgorytmMrówkowy
                 aktualnyWierzchołek = kolejkaPriorytetowa.ZwrocElement(0);
                 kolejkaPriorytetowa.UsunElement();
                 jestOznaczony[aktualnyWierzchołek.idWierzchołka] = true;
-                for (int i = 0; i < graf.GetLength(0) && graf[aktualnyWierzchołek.idWierzchołka, i] != 0; i++)
+                for (int i = 0; i < graf.GetLength(0); i++)
                 {
-
-                    // Dla każdego sąsiada v /*wierzchołka u dokonaj relaksacji poprzez u: jeśli d[u] +w(u, v) < d[v](poprzez u da się dojść do v szybciej niż dotychczasową ścieżką), to d[v] := d[u] + w(u, v).*/
-                    if (tablicaOdległośći[aktualnyWierzchołek.idWierzchołka] + graf[aktualnyWierzchołek.idWierzchołka, i] < tablicaOdległośći[i])
+                    if (graf[aktualnyWierzchołek.idWierzchołka, i] != 0)
                     {
-                        tablicaOdległośći[i] = tablicaOdległośći[aktualnyWierzchołek.idWierzchołka] + graf[aktualnyWierzchołek.idWierzchołka, i];
-                        tablicePoprzedników[i] = aktualnyWierzchołek.idWierzchołka;
-                        kolejkaPriorytetowa.DodajElement(new Koszt(aktualnyWierzchołek.idWierzchołka, aktualnyWierzchołek.odległośćOdWierzchołkaŹródłowego));
+                        // Dla każdego sąsiada v /*wierzchołka u dokonaj relaksacji poprzez u: jeśli d[u] +w(u, v) < d[v](poprzez u da się dojść do v szybciej niż dotychczasową ścieżką), to d[v] := d[u] + w(u, v).*/
+                        if (tablicaOdległośći[aktualnyWierzchołek.idWierzchołka] + graf[aktualnyWierzchołek.idWierzchołka, i] < tablicaOdległośći[i])
+                        {
+                            tablicaOdległośći[i] = tablicaOdległośći[aktualnyWierzchołek.idWierzchołka] + graf[aktualnyWierzchołek.idWierzchołka, i];
+                            tablicePoprzedników[i] = aktualnyWierzchołek.idWierzchołka;
+                            kolejkaPriorytetowa.DodajElement(new Koszt(aktualnyWierzchołek.idWierzchołka, aktualnyWierzchołek.odległośćOdWierzchołkaŹródłowego));
+                        }
                     }
                 }
             }
@@ -51,7 +53,7 @@ namespace AlgorytmMrówkowy
                     wierzchołkiNaTrasie.Add(tablicePoprzedników[rozważanyWierzchołek]);
                     rozważanyWierzchołek = tablicePoprzedników[rozważanyWierzchołek];
                 }
-                wierzchołkiNaTrasie.Add(wierzchołekKońcowy);
+
             }
             return tablicaOdległośći[wierzchołekKońcowy];
 
