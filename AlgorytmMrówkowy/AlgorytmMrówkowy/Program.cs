@@ -24,21 +24,23 @@ namespace AlgorytmMrówkowy
                     }
                 }
             }
-            double[,] grafKońcowy = new double[10, 10];
-            double[,] grafKońcowy2 = new double[10, 10];
-            grafKońcowy = Generator.GenerujGraf(10, 3, grafPoczątkowy, 0, 20);
-            ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba10");*/
-            double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba10");
-            double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 5, 7);
+            double[,] grafKońcowy = new double[100, 100];
+            double[,] grafKońcowy2 = new double[100, 100];
+            grafKońcowy = Generator.GenerujGraf(100, 3, grafPoczątkowy, 0, 30);
+            ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba100");*/
+            double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba100");
+            double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 30, 67);
             System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
+            
 
-            Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 2, 5, 300, 0.08, 0.5, 1, 10, 5, 5, 7, 100, 0.01, 2);
+
+            Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 2, 1, 300, 0.08, 0.1, 1, 100, 10, 30, 67, 100, 0.1, 2);
 
             System.Console.WriteLine("Mrówki: " + s.Max().koszt);
 
 
 
-
+            System.Console.ReadKey();
         }
     }
 }
