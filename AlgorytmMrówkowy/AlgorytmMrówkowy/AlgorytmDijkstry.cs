@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AlgorytmMrówkowy
 {
-    class AlgorytmDijsktry
+    class AlgorytmDijkstry
     {
         public static double wykonajAlgorytm(double[,] graf, int wierzchołekPoczątkowy, int wierzchołekKońcowy)
         {
@@ -39,7 +39,8 @@ namespace AlgorytmMrówkowy
                         {
                             tablicaOdległośći[i] = tablicaOdległośći[aktualnyWierzchołek.idWierzchołka] + graf[aktualnyWierzchołek.idWierzchołka, i];
                             tablicePoprzedników[i] = aktualnyWierzchołek.idWierzchołka;
-                            kolejkaPriorytetowa.DodajElement(new Koszt(aktualnyWierzchołek.idWierzchołka, aktualnyWierzchołek.odległośćOdWierzchołkaŹródłowego));
+                          //  kolejkaPriorytetowa.DodajElement(new Koszt(aktualnyWierzchołek.idWierzchołka, aktualnyWierzchołek.odległośćOdWierzchołkaŹródłowego));
+                            kolejkaPriorytetowa.DodajElement(new Koszt(i, tablicaOdległośći[i]));
                         }
                     }
                 }
@@ -53,7 +54,7 @@ namespace AlgorytmMrówkowy
                     wierzchołkiNaTrasie.Add(tablicePoprzedników[rozważanyWierzchołek]);
                     rozważanyWierzchołek = tablicePoprzedników[rozważanyWierzchołek];
                 }
-                //  wierzchołkiNaTrasie.Add(wierzchołekKońcowy);
+             
             }
             return tablicaOdległośći[wierzchołekKońcowy];
 
