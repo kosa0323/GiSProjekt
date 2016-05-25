@@ -53,7 +53,7 @@ namespace AlgorytmMrówkowy
                     wierzchołkiNaTrasie.Add(tablicePoprzedników[rozważanyWierzchołek]);
                     rozważanyWierzchołek = tablicePoprzedników[rozważanyWierzchołek];
                 }
-
+             
             }
             return tablicaOdległośći[wierzchołekKońcowy];
 
