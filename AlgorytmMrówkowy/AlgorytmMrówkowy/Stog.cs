@@ -17,7 +17,11 @@ namespace AlgorytmMrówkowy
             //dodaję zerowy element ponieważ zaczynamy wypełniać tablicę od indeksu 1
             data.Add(new Sciezka() { koszt = 0, listaWierzcholkow = null});
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index0"></param>
+        /// <param name="index1"></param>
         private void Swap(int index0, int index1)
         {
             Sciezka aux = data[index0];

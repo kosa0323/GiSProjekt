@@ -24,21 +24,18 @@ namespace AlgorytmMrówkowy
                     }
                 }
             }
-            double[,] grafKońcowy = new double[20, 20];
-            double[,] grafKońcowy2 = new double[20, 20];
-            grafKońcowy = Generator.GenerujGraf(20, 3, grafPoczątkowy, 0, 20);
-            ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba");
-            ModułObsługiPlików.OdczytajZPliku("próba");
+            double[,] grafKońcowy = new double[10, 10];
+            double[,] grafKońcowy2 = new double[10, 10];
+            grafKońcowy = Generator.GenerujGraf(10, 3, grafPoczątkowy, 0, 20);
+            ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba10");*/
+            double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba10");
+            double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 5, 7);
+            System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
 
+            Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 2, 5, 300, 0.08, 0.5, 1, 10, 5, 5, 7, 100, 0.01, 2);
 
-            Stog s = new Stog();
+            System.Console.WriteLine("Mrówki: " + s.Max().koszt);
 
-            s.Insert(new Sciezka() { koszt = 123, listaWierzcholkow = new List<int>()});
-            s.Insert(new Sciezka() { koszt = 1223, listaWierzcholkow = new List<int>() });
-            s.Insert(new Sciezka() { koszt = 3, listaWierzcholkow = new List<int>() });
-            s.Insert(new Sciezka() { koszt = 32, listaWierzcholkow = new List<int>() });
-            s.Insert(new Sciezka() { koszt = 321, listaWierzcholkow = new List<int>() });
-            s.Insert(new Sciezka() { koszt = 77, listaWierzcholkow = new List<int>() });*/
 
 
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<languages>
+	<English>
+		<title>OLSR</title>
+    <olsrifaces>Interface list</olsrifaces>
+    <olsrtest>Test Mode</olsrtest>
+    <olsrstart>Start</olsrstart>
+    <olsrstop>Stop</olsrstop>
+    <paramstitle>OLSR configuration Parameters</paramstitle>
+    <paramshello>HELLO interval</paramshello>
+    <paramstc>TC interval</paramstc>
+    <paramsrefresh>Refresh interval</paramsrefresh>
+    <paramslanguage>Language</paramslanguage>
+    <paramslanguages>English,Italian</paramslanguages>
+    <paramsrestore>Restore RFC</paramsrestore>
+    <paramssave>Save</paramssave>
+    <neighborlink>Neighbours</neighborlink>
+    <neighborsecond>2-hop Neighbours</neighborsecond>
+    <mprlist>MPR's</mprlist>
+    <errortestfile>Error reading debug file, the system starts normally</errortestfile>
+    <selectiface>You must select one interface of the list</selectiface>
+  </English>
+	<Italian>
+    <title>OLSR</title>
+		<olsrifaces>Lista interfacce</olsrifaces>
+		<olsrtest>Modalit di test </olsrtest>
+		<olsrstart>Avvia</olsrstart>
+		<olsrstop>Ferma</olsrstop>
+		<paramstitle>Parametri di configurazione OLSR</paramstitle>
+		<paramshello>Intervallo tra HELLO</paramshello>
+		<paramstc>Intervallo tra TC</paramstc>
+		<paramsrefresh>Intervallo di aggiornamento</paramsrefresh>
+		<paramslanguage>Lingua</paramslanguage>
+		<paramslanguages>Inglese,Italiano</paramslanguages>
+		<paramsrestore>Ripristina RFC </paramsrestore>
+		<paramssave>Salva </paramssave>
+		<neighborlink>Vicini</neighborlink>
+		<neighborsecond>Vicini a 2-hop</neighborsecond>
+		<mprlist>MPRs</mprlist>
+		<errortestfile>Errore durante la lettura del file di debug, il sistema si avvier normalmente </errortestfile>
+		<selectiface> necessario selezionare un'interfaccia dalla lista</selectiface>
+	</Italian>
+</languages>

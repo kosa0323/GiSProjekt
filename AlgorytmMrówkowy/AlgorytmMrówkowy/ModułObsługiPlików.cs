@@ -50,7 +50,7 @@ namespace AlgorytmMrówkowy
                 {
                     string[] tmp = linia.Split(' ');
                     graf[Convert.ToInt32(tmp[1]), Convert.ToInt32(tmp[2])] = Convert.ToDouble(tmp[3]);
-                    graf[Convert.ToInt32(tmp[1]), Convert.ToInt32(tmp[2])] = Convert.ToDouble(tmp[3]);
+                    graf[Convert.ToInt32(tmp[2]), Convert.ToInt32(tmp[1])] = Convert.ToDouble(tmp[3]);
                 }
             }
 
