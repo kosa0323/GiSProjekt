@@ -10,7 +10,7 @@ namespace AlgorytmMrówkowy
     {
         static void Main(string[] args)
         {
-            double[,] grafPoczątkowy = new double[3, 3];
+            /*double[,] grafPoczątkowy = new double[3, 3];
             for (int i = 0; i < grafPoczątkowy.GetLength(0); i++)
             {
                 for (int j = 0; j < grafPoczątkowy.GetLength(0); j++)
