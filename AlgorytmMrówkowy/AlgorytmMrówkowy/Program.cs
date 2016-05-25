@@ -29,7 +29,7 @@ namespace AlgorytmMrówkowy
             //grafKońcowy = Generator.GenerujGraf(20, 3, grafPoczątkowy, 0, 20);
            // ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba");
     double[,] graf=        ModułObsługiPlików.OdczytajZPliku("graf");
-            AlgorytmDijkstry.wykonajAlgorytm(graf,0,9);
+            AlgorytmDijkstry.wykonajAlgorytm(graf,5,7);
         }
     }
 }
