@@ -39,7 +39,8 @@ namespace AlgorytmMrówkowy
                         {
                             tablicaOdległośći[i] = tablicaOdległośći[aktualnyWierzchołek.idWierzchołka] + graf[aktualnyWierzchołek.idWierzchołka, i];
                             tablicePoprzedników[i] = aktualnyWierzchołek.idWierzchołka;
-                            kolejkaPriorytetowa.DodajElement(new Koszt(aktualnyWierzchołek.idWierzchołka, aktualnyWierzchołek.odległośćOdWierzchołkaŹródłowego));
+                            //kolejkaPriorytetowa.DodajElement(new Koszt(aktualnyWierzchołek.idWierzchołka, aktualnyWierzchołek.odległośćOdWierzchołkaŹródłowego));
+                            kolejkaPriorytetowa.DodajElement(new Koszt(i, tablicaOdległośći[i]));
                         }
                     }
                 }

@@ -146,12 +146,13 @@ namespace AlgorytmMrówkowy
                         wezel = wezelStartowy;
                         tmp = new Sciezka();
                         tmp.listaWierzcholkow.Add(wezelStartowy);
-                        tabuList = new List<int>();
-                        zbiorSasiadow = new List<PrawdPlusWezel>();
+                        tabuList = new List<int>() { wezel };
                         //Wybór ścieżki dla konkretnej mrówki.
                         do
                         {
+                            zbiorSasiadow = new List<PrawdPlusWezel>();
                             // Obliczenie prawdopodobieństw przejść do sąsiednich wierzchołków.
+                            sumaR = 0;
                             for (int j = 0; j < wymiarMacierzyBok; j++)
                             {
                                 if (infoSiec[wezel, j].wagaLacza != 0 && !tabuList.Contains(j))
@@ -183,7 +184,7 @@ namespace AlgorytmMrówkowy
                                 }
                                 poprz = p.prawdopodobienstwo;
                             }
-                        } while (wezel != wezelKoncowy);
+                        } while (wezel != wezelKoncowy && zbiorSasiadow.Count != 0);
 
                         //Dodanie ścieżki do stogu.
                         zbiorSciezek.Insert(tmp);
@@ -233,7 +234,7 @@ namespace AlgorytmMrówkowy
 
                     if(czyStagnacja)
                         for (int i = 0; i < infoSiec.GetLength(1); i++)
-                            for (int j = 0; j < infoSiec.GetLength(2); j++)
+                            for (int j = 0; j < infoSiec.GetLength(1); j++)
                                 infoSiec[i, j].stezenieFeromonu = tablica[i, j];
 
                     licznik++;
