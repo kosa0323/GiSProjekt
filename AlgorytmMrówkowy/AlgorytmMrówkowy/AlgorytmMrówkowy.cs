@@ -120,7 +120,7 @@ namespace AlgorytmMrówkowy
                     {
                         if (infoSiec[i, j].wagaLacza != 0 && infoSiec[i, j].stezenieFeromonu > pomLambda * (pomMaxTał[i] - pomMinTał[i]) + pomMinTał[i])
                         {
-                            liczIncydZWarun++;
+                            liczIncydZWarun++;//nie wchodzi do punktu stagnacji
                         }
                     }
                 }
@@ -129,6 +129,7 @@ namespace AlgorytmMrówkowy
                 czyStagnacja = false;
                 if (liczIncydZWarun / infoSiec.GetLength(1) < epsilon)
                 {
+                    //przemyśleć punkt stagnacji
                     czyStagnacja = true;
                     for (int i = 0; i < infoSiec.GetLength(1); i++)
                         for (int j = 0; j < infoSiec.GetLength(1); j++)
