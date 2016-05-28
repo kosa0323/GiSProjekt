@@ -89,7 +89,7 @@ namespace AlgorytmMrówkowy
             List<PrawdPlusWezel> zbiorSasiadow;
             Random rr = new Random();
             int liczIncydZWarun = 0;
-            double pomLambda = 0.000000000005;
+            double pomLambda = 0.000000000000000009;//0.025
             double[] pomMaxTał = new double[infoSiec.GetLength(1)], pomMinTał = new double[infoSiec.GetLength(1)];
             double[,] tablica = new double[infoSiec.GetLength(1), infoSiec.GetLength(1)];// Tablica którą używamy przy punkcie stagnacji
             bool czyStagnacja = false;
@@ -131,12 +131,13 @@ namespace AlgorytmMrówkowy
                 //Jeśli jesteśmy w punkcie stagnacji
                 /************************************     zamknąłem klamre ifa *****************************************/
                 czyStagnacja = false;
+               double tmp2 = (double)liczIncydZWarun / (double)infoSiec.GetLength(1);
                 if (licznik != 0)
                 {
-                    if (liczIncydZWarun / infoSiec.GetLength(1) < epsilon)//jeśli znajdujesz się w punkcie stagnacji(równanie6)
+                    if (tmp2 < epsilon)//jeśli znajdujesz się w punkcie stagnacji(równanie6)
                     {
                         stagnacja++;
-                        czyStagnacja = false;
+                        czyStagnacja = true;
                         for (int i = 0; i < infoSiec.GetLength(1); i++)
                             for (int j = 0; j < infoSiec.GetLength(1); j++)
                             {
@@ -185,7 +186,7 @@ namespace AlgorytmMrówkowy
                         foreach (PrawdPlusWezel p in zbiorSasiadow)
                         {
                             //p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR;
-                            if (r >= poprz && r < p.prawdopodobienstwo)
+                            if (r >= poprz && r < poprz+p.prawdopodobienstwo)
                             {
                                 tmp.listaWierzcholkow.Add(p.nrWezla); //Jeśli wylosowano ten wierzchołek to dodajmy go do ścieżki.
                                 tmp.koszt += infoSiec[wezel, p.nrWezla].wagaLacza;
@@ -285,15 +286,16 @@ namespace AlgorytmMrówkowy
                 /****************************************************zmianiłem n na info.GetLength(0) (liczba mrówek na liczbe wierzchiłków) ****************************************/
                 tałMin = (tałMax * (1 - (Math.Sqrt(pDaszkiem)) * infoSiec.GetLength(0))) / ((infoSiec.GetLength(0) / 2 - 1) * (Math.Sqrt(pDaszkiem)) * infoSiec.GetLength(0)); //Równanie 11. n to liczba wierzchołków a nie mrówek
 
-                if (czyStagnacja)
+               if (czyStagnacja)
                     for (int i = 0; i < infoSiec.GetLength(1); i++)
                         for (int j = 0; j < infoSiec.GetLength(1); j++)
                             infoSiec[i, j].stezenieFeromonu = tablica[i, j];
-
+                            
                 licznik++;
             
             
             } while (licznik < liczbaIteracji);
+
 
             return najlepszeGlobalnieSciezki;
         }
