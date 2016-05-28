@@ -31,10 +31,10 @@ namespace AlgorytmMrówkowy
             double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba100");
             double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 30, 67);
             System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
-            
+            Console.WriteLine(args[1]);
 
 
-            Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 2, 1, 300, 0.08, 0.1, 1, 100, 10, 30, 67, 100, 0.1, 2);
+            Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 20, 1, 50, 0.08, 0.01, 1, 100, 10, 30, 67, 1000, 0.1, 2);
 
             System.Console.WriteLine("Mrówki: " + s.Max().koszt);
 
