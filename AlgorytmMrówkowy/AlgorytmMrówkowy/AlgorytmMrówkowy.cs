@@ -65,6 +65,7 @@ namespace AlgorytmMrówkowy
                                             double epsilon,
                                             double wspolczynnikRownania5)
         {
+            int stagnacja = 0;
             int wymiarMacierzyDol = grafWejsciowy.GetLength(0);
             int wymiarMacierzyBok = grafWejsciowy.GetLength(1);
             //Tablica przechowująca informacje o grafie
@@ -88,7 +89,7 @@ namespace AlgorytmMrówkowy
             List<PrawdPlusWezel> zbiorSasiadow;
             Random rr = new Random();
             int liczIncydZWarun = 0;
-            double pomLambda = 0.05;
+            double pomLambda = 0.000000000000000009;//0.025
             double[] pomMaxTał = new double[infoSiec.GetLength(1)], pomMinTał = new double[infoSiec.GetLength(1)];
             double[,] tablica = new double[infoSiec.GetLength(1), infoSiec.GetLength(1)];// Tablica którą używamy przy punkcie stagnacji
             bool czyStagnacja = false;
@@ -103,6 +104,7 @@ namespace AlgorytmMrówkowy
                 liczIncydZWarun = 0;
 
                 for (int i = 0; i < infoSiec.GetLength(0); i++)
+                {
                     for (int j = 0; j < infoSiec.GetLength(1); j++)
                     {
                         if (infoSiec[i, j].wagaLacza != 0)
@@ -113,134 +115,187 @@ namespace AlgorytmMrówkowy
                                 pomMinTał[i] = infoSiec[i, j].stezenieFeromonu;
                         }
                     }
-
+                }
                 for (int i = 0; i < infoSiec.GetLength(1); i++)
                 {
                     for (int j = 0; j < infoSiec.GetLength(1); j++)
                     {
                         if (infoSiec[i, j].wagaLacza != 0 && infoSiec[i, j].stezenieFeromonu > pomLambda * (pomMaxTał[i] - pomMinTał[i]) + pomMinTał[i])
                         {
-                            liczIncydZWarun++;
+                            liczIncydZWarun++;//nie wchodzi do punktu stagnacji
                         }
                     }
                 }
+
                 double deltaTał = 0;
                 //Jeśli jesteśmy w punkcie stagnacji
+                /************************************     zamknąłem klamre ifa *****************************************/
                 czyStagnacja = false;
-                if (liczIncydZWarun / infoSiec.GetLength(1) < epsilon)
+               double tmp2 = (double)liczIncydZWarun / (double)infoSiec.GetLength(1);
+                if (licznik != 0)
                 {
-                    czyStagnacja = true;
-                    for (int i = 0; i < infoSiec.GetLength(1); i++)
-                        for (int j = 0; j < infoSiec.GetLength(1); j++)
-                        {
-                            deltaTał = (tałMax - infoSiec[i, j].stezenieFeromonu) * wspolczynnikRownania5;
-                            tablica[i, j] = infoSiec[i, j].stezenieFeromonu + deltaTał;
-                        }
-
-                    zbiorSciezek = new Stog();
-                    double r = 0, sumaR = 0;
-
-                    #region Dla każdej mrówki znajdź scieżkę
-                    for (int i = 0; i < n; i++)
+                    if (tmp2 < epsilon)//jeśli znajdujesz się w punkcie stagnacji(równanie6)
                     {
-                        wezel = wezelStartowy;
-                        tmp = new Sciezka();
-                        tmp.listaWierzcholkow.Add(wezelStartowy);
-                        tabuList = new List<int>() { wezel };
-                        //Wybór ścieżki dla konkretnej mrówki.
-                        do
-                        {
-                            zbiorSasiadow = new List<PrawdPlusWezel>();
-                            // Obliczenie prawdopodobieństw przejść do sąsiednich wierzchołków.
-                            sumaR = 0;
-                            for (int j = 0; j < wymiarMacierzyBok; j++)
-                            {
-                                if (infoSiec[wezel, j].wagaLacza != 0 && !tabuList.Contains(j))
-                                {
-                                    r = Math.Pow(infoSiec[wezel, j].stezenieFeromonu, alfa) * Math.Pow(1 / (infoSiec[wezel, j].wagaLacza), beta); //Równanie 2 bez dzielenia przez sumę.
-                                    zbiorSasiadow.Add(new PrawdPlusWezel() { prawdopodobienstwo = r, nrWezla = j });
-                                    sumaR += r;
-                                }
-                            }
-                            foreach (PrawdPlusWezel p in zbiorSasiadow)
-                                p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR; // Dokończenie Równania nr 2.
-
-
-
-                            double poprz = 0;
-                            // Losowanie liczby z przedziału (0, 1) o rozkładdzie jednostajnym
-                            r = rr.NextDouble();
-                            // Wybór kolejnego wierzchołka.
-                            foreach (PrawdPlusWezel p in zbiorSasiadow)
-                            {
-                                //p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR;
-                                if (r >= poprz && r < p.prawdopodobienstwo)
-                                {
-                                    tmp.listaWierzcholkow.Add(p.nrWezla); //Jeśli wylosowano ten wierzchołek to dodajmy go do ścieżki.
-                                    tmp.koszt += infoSiec[wezel, p.nrWezla].wagaLacza;
-                                    wezel = p.nrWezla;
-                                    tabuList.Add(wezel);
-                                    break;
-                                }
-                                poprz = p.prawdopodobienstwo;
-                            }
-                        } while (wezel != wezelKoncowy && zbiorSasiadow.Count != 0);
-
-                        //Dodanie ścieżki do stogu.
-                        zbiorSciezek.Insert(tmp);
-                    }
-                    #endregion
-
-                    //Dodaję każde najlepsze rozwiązanie z iteracji do najlepszych globalnych rozwiązań.
-                    najlepszeGlobalnieSciezki.Insert(zbiorSciezek.Max());
-
-                    //Aktualizacja stężenia feromonów.
-                    double noweStezenie = 0;
-                    if (licznik == fLambda)
-                    {
-                        Sciezka s = najlepszeGlobalnieSciezki.Max();
-                        for (int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
-                        {
-                            noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
-                            infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
-                        }
-                    }
-                    else
-                    {
-                        Sciezka s = zbiorSciezek.Max();
-                        for (int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
-                        {
-                            noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
-                            infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
-                        }
-                    }
-
-                    //Stężenie feromonów musi zawierać się w określonych granicach.
-                    for (int i = 0; i < infoSiec.GetLength(1); i++)
-                        for (int j = 0; j < infoSiec.GetLength(1); j++)
-                        {
-                            if (infoSiec[i, j].stezenieFeromonu < tałMin)
-                            {
-                                infoSiec[i, j].stezenieFeromonu = tałMin;
-                            }
-                            else if (infoSiec[i, j].stezenieFeromonu > tałMax)
-                            {
-                                infoSiec[i, j].stezenieFeromonu = tałMax;
-                            }
-                        }
-
-                    tałMax = (1 / (1 - ro)) * (1 / najlepszeGlobalnieSciezki.Max().koszt); // Równanie 10.
-                    tałMin = (tałMax * (1 - (Math.Sqrt(pDaszkiem)) * n)) / ((n / 2 - 1) * (Math.Sqrt(pDaszkiem)) * n); //Równanie 11.
-
-                    if(czyStagnacja)
+                        stagnacja++;
+                        czyStagnacja = true;
                         for (int i = 0; i < infoSiec.GetLength(1); i++)
                             for (int j = 0; j < infoSiec.GetLength(1); j++)
-                                infoSiec[i, j].stezenieFeromonu = tablica[i, j];
+                            {
+                                deltaTał = (tałMax - infoSiec[i, j].stezenieFeromonu) * wspolczynnikRownania5;//delta tal ij (t)
+                                tablica[i, j] = infoSiec[i, j].stezenieFeromonu + deltaTał;//delta tal ij (t+1)+delta ij  tal(t)
+                            }
+                    }
+                }// do tej pory ok
+                zbiorSciezek = new Stog();
+                double r = 0, sumaR = 0;
 
-                    licznik++;
+                #region Dla każdej mrówki znajdź scieżkę
+                for (int i = 0; i < n; i++)
+                {
+                    wezel = wezelStartowy;
+                    tmp = new Sciezka();
+                    tmp.listaWierzcholkow.Add(wezelStartowy);
+                    tabuList = new List<int>() { wezel };
+                    //Wybór ścieżki dla konkretnej mrówki.
+                    do
+                    {
+                        zbiorSasiadow = new List<PrawdPlusWezel>();
+                        // Obliczenie prawdopodobieństw przejść do sąsiednich wierzchołków.
+                        sumaR = 0;
+                        for (int j = 0; j < wymiarMacierzyBok; j++)
+                        {
+                            if (infoSiec[wezel, j].wagaLacza != 0 && !tabuList.Contains(j))//spróbować bez uwzględniania tabu list
+                            {
+                                r = Math.Pow(infoSiec[wezel, j].stezenieFeromonu, alfa) * Math.Pow((1 / (infoSiec[wezel, j].wagaLacza)), beta); //Równanie 2 bez dzielenia przez sumę.
+                                zbiorSasiadow.Add(new PrawdPlusWezel() { prawdopodobienstwo = r, nrWezla = j });
+                                sumaR += r;
+                            }
+                        }
+                        double sumaPrawd = 0;//sprawdzenie czy się sumują do jedynki
+                        foreach (PrawdPlusWezel p in zbiorSasiadow)
+                        {
+                            p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR; // Dokończenie Równania nr 2.
+                            sumaPrawd += p.prawdopodobienstwo;
+                        }
+
+
+                        double poprz = 0;
+                        // Losowanie liczby z przedziału (0, 1) o rozkładdzie jednostajnym
+                        r = rr.NextDouble();
+                        // Wybór kolejnego wierzchołka.
+                        foreach (PrawdPlusWezel p in zbiorSasiadow)
+                        {
+                            //p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR;
+                            if (r >= poprz && r < poprz+p.prawdopodobienstwo)
+                            {
+                                tmp.listaWierzcholkow.Add(p.nrWezla); //Jeśli wylosowano ten wierzchołek to dodajmy go do ścieżki.
+                                tmp.koszt += infoSiec[wezel, p.nrWezla].wagaLacza;
+                                wezel = p.nrWezla;
+                                tabuList.Add(wezel);
+                                break;
+                            }
+                            poprz = p.prawdopodobienstwo;
+                        }
+                        /*************** w przypadku zablokowania mrówki ustawiamy wartość rozwiązania na nieskończność ***********************************/
+                        if (zbiorSasiadow.Count == 0 && wezel == wezelKoncowy)
+                        {
+                            tmp.koszt = Double.PositiveInfinity;
+                        }
+                        else if(wezelKoncowy==wezel)
+                        {
+                            int sprawdz = 0;
+                        }
+                    } while (wezel != wezelKoncowy && zbiorSasiadow.Count != 0);
+
+                    //Dodanie ścieżki do stogu.
+                    zbiorSciezek.Insert(tmp);
+                }
+                #endregion
+
+                //Dodaję każde najlepsze rozwiązanie z iteracji do najlepszych globalnych rozwiązań.
+                najlepszeGlobalnieSciezki.Insert(zbiorSciezek.Max());
+
+                //Aktualizacja stężenia feromonów.
+
+                Info[,] grafPomocniczy = new Info[infoSiec.GetLength(0), infoSiec.GetLength(0)];
+                double noweStezenie = 0;
+                if (licznik % fLambda==0)//nie koniecznie równe wystarczy że będzie podzielne przez flambda poprawić
+                {
+                    Sciezka s = najlepszeGlobalnieSciezki.Max();
+                    for (int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
+                    {
+                        noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
+                        grafPomocniczy[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                        grafPomocniczy[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;
+                        //                        infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                        /*********************** graf nieskierowany trzeba dodać tu i tu analogicznie w elsie**************************************************************/
+                        //                      infoSiec[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;//graf nieskierowany
+                    }
+                   
+                }
+                else
+                {
+                    Sciezka s = zbiorSciezek.Max();
+                    for (int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
+                    {
+                        noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
+                        grafPomocniczy[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                        grafPomocniczy[s.listaWierzcholkow[i + 1], s.listaWierzcholkow[i]].stezenieFeromonu = noweStezenie;
+                        //                    infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                        //                  infoSiec[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;
+                    }
                 }
 
+               
+                for (int i = 0; i < infoSiec.GetLength(0); i++)
+                {
+                    for (int j = 0; j < infoSiec.GetLength(0); j++)
+                    {
+                        infoSiec[i, j].stezenieFeromonu = infoSiec[i, j].stezenieFeromonu * (1-ro);
+                    }
+                }
+
+                for (int i = 0; i < infoSiec.GetLength(0); i++)
+                {
+                    for (int j = 0; j < infoSiec.GetLength(0); j++)
+                    {
+                        if(grafPomocniczy[i,j].stezenieFeromonu!=0)
+                            infoSiec[i, j].stezenieFeromonu = grafPomocniczy[i,j].stezenieFeromonu;
+                    }
+                }
+
+
+
+
+
+                //Stężenie feromonów musi zawierać się w określonych granicach.
+                for (int i = 0; i < infoSiec.GetLength(1); i++)//to jest ok
+                    for (int j = 0; j < infoSiec.GetLength(1); j++)
+                    {
+                        if (infoSiec[i, j].stezenieFeromonu < tałMin)
+                        {
+                            infoSiec[i, j].stezenieFeromonu = tałMin;
+                        }
+                        else if (infoSiec[i, j].stezenieFeromonu > tałMax)
+                        {
+                            infoSiec[i, j].stezenieFeromonu = tałMax;
+                        }
+                    }
+
+                tałMax = (1 / (1 - ro)) * (1 / najlepszeGlobalnieSciezki.Max().koszt); // Równanie 10. sprawdzic tez
+                /****************************************************zmianiłem n na info.GetLength(0) (liczba mrówek na liczbe wierzchiłków) ****************************************/
+                tałMin = (tałMax * (1 - (Math.Sqrt(pDaszkiem)) * infoSiec.GetLength(0))) / ((infoSiec.GetLength(0) / 2 - 1) * (Math.Sqrt(pDaszkiem)) * infoSiec.GetLength(0)); //Równanie 11. n to liczba wierzchołków a nie mrówek
+
+               if (czyStagnacja)
+                    for (int i = 0; i < infoSiec.GetLength(1); i++)
+                        for (int j = 0; j < infoSiec.GetLength(1); j++)
+                            infoSiec[i, j].stezenieFeromonu = tablica[i, j];
+                            
+                licznik++;
+            
+            
             } while (licznik < liczbaIteracji);
+
 
             return najlepszeGlobalnieSciezki;
         }
