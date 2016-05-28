@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace AlgorytmMrówkowy
 {
     class Stóg<T> where T : IComparable<T>
+
     {
         #region zmienne
         private T[] tablica_elementow;
