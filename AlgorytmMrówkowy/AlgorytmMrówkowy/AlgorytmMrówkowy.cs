@@ -186,7 +186,7 @@ namespace AlgorytmMrówkowy
                         foreach (PrawdPlusWezel p in zbiorSasiadow)
                         {
                             //p.prawdopodobienstwo = p.prawdopodobienstwo / sumaR;
-                            if (r >= poprz && r < poprz+p.prawdopodobienstwo)
+                            if (r >= poprz && r < poprz + p.prawdopodobienstwo)
                             {
                                 tmp.listaWierzcholkow.Add(p.nrWezla); //Jeśli wylosowano ten wierzchołek to dodajmy go do ścieżki.
                                 tmp.koszt += infoSiec[wezel, p.nrWezla].wagaLacza;
@@ -201,7 +201,7 @@ namespace AlgorytmMrówkowy
                         {
                             tmp.koszt = Double.PositiveInfinity;
                         }
-                        else if(wezelKoncowy==wezel)
+                        else if(wezelKoncowy == wezel)
                         {
                             int sprawdz = 0;
                         }
