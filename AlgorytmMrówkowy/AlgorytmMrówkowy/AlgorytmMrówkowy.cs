@@ -31,8 +31,9 @@ namespace AlgorytmMrówkowy
         public double prawdopodobienstwo;
         public int nrWezla;
     }
-    static class AlgorytmMrówkowy
+    class AlgorytmMrówkowy
     {
+        public static TimeSpan elapsedMs = TimeSpan.MinValue;
         /// <summary>
         /// Funkcja wywołująca realizująca algorytm mrówkowy(Max-Min).
         /// </summary>
@@ -89,10 +90,14 @@ namespace AlgorytmMrówkowy
             List<PrawdPlusWezel> zbiorSasiadow;
             Random rr = new Random();
             int liczIncydZWarun = 0;
-            double pomLambda = 0.000000000000000009;//0.025
+            double pomLambda = 0.05;//0.025
             double[] pomMaxTał = new double[infoSiec.GetLength(1)], pomMinTał = new double[infoSiec.GetLength(1)];
             double[,] tablica = new double[infoSiec.GetLength(1), infoSiec.GetLength(1)];// Tablica którą używamy przy punkcie stagnacji
             bool czyStagnacja = false;
+
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            
+
             do
             {
                 for (int i = 0; i < infoSiec.GetLength(1); i++)
@@ -116,6 +121,8 @@ namespace AlgorytmMrówkowy
                         }
                     }
                 }
+                //Console.WriteLine(pomMinTał[50]);
+                //Console.WriteLine(pomMaxTał[50]);
                 for (int i = 0; i < infoSiec.GetLength(1); i++)
                 {
                     for (int j = 0; j < infoSiec.GetLength(1); j++)
@@ -126,12 +133,12 @@ namespace AlgorytmMrówkowy
                         }
                     }
                 }
-
+                Console.WriteLine(liczIncydZWarun);
                 double deltaTał = 0;
                 //Jeśli jesteśmy w punkcie stagnacji
                 /************************************     zamknąłem klamre ifa *****************************************/
                 czyStagnacja = false;
-               double tmp2 = (double)liczIncydZWarun / (double)infoSiec.GetLength(1);
+                double tmp2 = (double)liczIncydZWarun / (double)infoSiec.GetLength(1);
                 if (licznik != 0)
                 {
                     if (tmp2 < epsilon)//jeśli znajdujesz się w punkcie stagnacji(równanie6)
@@ -171,6 +178,10 @@ namespace AlgorytmMrówkowy
                                 sumaR += r;
                             }
                         }
+                        if(sumaR == 0 && zbiorSasiadow.Count != 0)
+                        {
+                            string saf = "df";
+                        }
                         double sumaPrawd = 0;//sprawdzenie czy się sumują do jedynki
                         foreach (PrawdPlusWezel p in zbiorSasiadow)
                         {
@@ -178,7 +189,10 @@ namespace AlgorytmMrówkowy
                             sumaPrawd += p.prawdopodobienstwo;
                         }
 
-
+                        if(sumaPrawd != 1)
+                        {
+                            string afgs = "asd";
+                        }
                         double poprz = 0;
                         // Losowanie liczby z przedziału (0, 1) o rozkładdzie jednostajnym
                         r = rr.NextDouble();
@@ -197,15 +211,16 @@ namespace AlgorytmMrówkowy
                             poprz = p.prawdopodobienstwo;
                         }
                         /*************** w przypadku zablokowania mrówki ustawiamy wartość rozwiązania na nieskończność ***********************************/
-                        if (zbiorSasiadow.Count == 0 && wezel == wezelKoncowy)
+                        if ((zbiorSasiadow.Count == 0 && wezel != wezelKoncowy) || (zbiorSasiadow.Count != 0 && sumaR == 0))
                         {
                             tmp.koszt = Double.PositiveInfinity;
+                            break;
                         }
                         else if(wezelKoncowy == wezel)
                         {
                             int sprawdz = 0;
                         }
-                    } while (wezel != wezelKoncowy && zbiorSasiadow.Count != 0);
+                    } while (wezel != wezelKoncowy);
 
                     //Dodanie ścieżki do stogu.
                     zbiorSciezek.Insert(tmp);
@@ -224,12 +239,19 @@ namespace AlgorytmMrówkowy
                     Sciezka s = najlepszeGlobalnieSciezki.Max();
                     for (int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
                     {
-                        noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
-                        grafPomocniczy[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
-                        grafPomocniczy[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;
-                        //                        infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
-                        /*********************** graf nieskierowany trzeba dodać tu i tu analogicznie w elsie**************************************************************/
-                        //                      infoSiec[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;//graf nieskierowany
+                        //if(infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu != 0)
+                        {
+                            noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
+                            if (infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu == 0)
+                            {
+                                string supa = "ads";
+                            }
+                            grafPomocniczy[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                            grafPomocniczy[s.listaWierzcholkow[i + 1], s.listaWierzcholkow[i]].stezenieFeromonu = noweStezenie;
+                            //                        infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                            /*********************** graf nieskierowany trzeba dodać tu i tu analogicznie w elsie**************************************************************/
+                            //                      infoSiec[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;//graf nieskierowany
+                        }
                     }
                    
                 }
@@ -238,11 +260,18 @@ namespace AlgorytmMrówkowy
                     Sciezka s = zbiorSciezek.Max();
                     for (int i = 0; i < s.listaWierzcholkow.Count - 1; i++)
                     {
-                        noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
-                        grafPomocniczy[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
-                        grafPomocniczy[s.listaWierzcholkow[i + 1], s.listaWierzcholkow[i]].stezenieFeromonu = noweStezenie;
-                        //                    infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
-                        //                  infoSiec[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;
+                        //if (infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu != 0)
+                        {
+                            noweStezenie = (1 - ro) * infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu + ro * (1 / s.koszt);
+                            if (infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu == 0)
+                            {
+                                string supa = "ads";
+                            }
+                            grafPomocniczy[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                            grafPomocniczy[s.listaWierzcholkow[i + 1], s.listaWierzcholkow[i]].stezenieFeromonu = noweStezenie;
+                            //                    infoSiec[s.listaWierzcholkow[i], s.listaWierzcholkow[i + 1]].stezenieFeromonu = noweStezenie;
+                            //                  infoSiec[s.listaWierzcholkow[i+1], s.listaWierzcholkow[i ]].stezenieFeromonu = noweStezenie;
+                        }
                     }
                 }
 
@@ -296,7 +325,8 @@ namespace AlgorytmMrówkowy
             
             } while (licznik < liczbaIteracji);
 
-
+            watch.Stop();
+            elapsedMs = watch.Elapsed;
             return najlepszeGlobalnieSciezki;
         }
     }
