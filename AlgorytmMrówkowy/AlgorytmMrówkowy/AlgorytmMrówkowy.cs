@@ -33,6 +33,7 @@ namespace AlgorytmMrówkowy
     }
     static class AlgorytmMrówkowy
     {
+        public static TimeSpan elapsedMs = TimeSpan.MinValue;
         /// <summary>
         /// Funkcja wywołująca realizująca algorytm mrówkowy(Max-Min).
         /// </summary>
@@ -94,6 +95,7 @@ namespace AlgorytmMrówkowy
             double[] pomMaxTał = new double[infoSiec.GetLength(1)], pomMinTał = new double[infoSiec.GetLength(1)];
             double[,] tablica = new double[infoSiec.GetLength(1), infoSiec.GetLength(1)];// Tablica którą używamy przy punkcie stagnacji
             bool czyStagnacja = false;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             do
             {
                 for (int i = 0; i < infoSiec.GetLength(1); i++)
@@ -140,9 +142,7 @@ namespace AlgorytmMrówkowy
                 //Jeśli jesteśmy w punkcie stagnacji
                 /************************************     zamknąłem klamre ifa *****************************************/
                 czyStagnacja = false;
-               double tmp2 = (double)liczIncydZWarun / (double)infoSiec.GetLength(1);
-                if (licznik >punktStagnacji+500)
-                {
+               double tmp2 = (double)liczIncydZWarun / (double)infoSiec.GetLength(1);   
                     if (tmp2 < epsilon)//jeśli znajdujesz się w punkcie stagnacji(równanie6)
                     {
                         stagnacja++;
@@ -159,7 +159,6 @@ namespace AlgorytmMrówkowy
                                 tablica[i, j] = infoSiec[i, j].stezenieFeromonu + deltaTał;//delta tal ij (t+1)+delta ij  tal(t)
                             }
                     }
-                }// do tej pory ok
                 zbiorSciezek = new Stog();
                 double r = 0, sumaR = 0;
 
@@ -344,7 +343,8 @@ namespace AlgorytmMrówkowy
 
             } while (licznik < liczbaIteracji);
 
-
+            watch.Stop();
+            elapsedMs = watch.Elapsed;
             return najlepszeGlobalnieSciezki;
         }
     }
