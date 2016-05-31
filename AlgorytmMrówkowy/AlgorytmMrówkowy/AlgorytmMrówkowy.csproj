@@ -52,6 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sciezka.cs" />
     <Compile Include="Siec.cs" />
+    <Compile Include="Statystyki.cs" />
     <Compile Include="Stog.cs" />
     <Compile Include="Stóg.cs" />
   </ItemGroup>
