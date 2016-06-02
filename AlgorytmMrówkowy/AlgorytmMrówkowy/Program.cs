@@ -31,16 +31,17 @@ namespace AlgorytmMrówkowy
   //          grafKońcowy = Generator.GenerujGraf(50, 3, grafPoczątkowy, 0, 1);
             //ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba50");
             double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba100");
-       //     double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 8, 69);
-         //         System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
+            //     double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 8, 69);
+            //         System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
             //        Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 3,2, 50, 0.015, 0.00001, 0.5, 1.2, 10, 8,37 , 1500, 0.25, 1);
             //          System.Console.WriteLine("Mrówki: " + s.Max().koszt);
 
-            for (int j = 0; j < 100; j++)
+            List<double[,]> lista = new List<double[,]>();
+            for(int i = 0; i < 100; i++)
+                lista.Add(grafKońcowy = Generator.GenerujGraf(50, 3, grafPoczątkowy, 0, 1));
+
+            /*for (int j = 0; j < 100; j++)
             {
-
-
-               
                     Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 2, 1, 50, 0.15, 0.00009, 0.001, 1.1, 15, 8, 69,50, 0.25, 1.5);
                     using (FileStream fs = new FileStream("100razy100wierzch50iteracji2" + ".txt", FileMode.Append, FileAccess.Write))
                     using (StreamWriter sw = new StreamWriter(fs))
@@ -50,7 +51,7 @@ namespace AlgorytmMrówkowy
 
                     }
                 
-            }
+            }*/
             //Console.ReadKey();
             /*for (int i = 1; i <= 6; i++)
             {
