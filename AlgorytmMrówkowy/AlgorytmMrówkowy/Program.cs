@@ -25,18 +25,21 @@ namespace AlgorytmMrówkowy
                     }
                 }
             }
-            int []tablicaMrówek = new int [9] {5,10,40,80,100,140,160,180,200 };
-            double[,] grafKońcowy; //= new double[5000, 5000];
-        //    double[,] grafKońcowy2 = new double[5000, 5000];
-  //          grafKońcowy = Generator.GenerujGraf(50, 3, grafPoczątkowy, 0, 1);
-            //ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba50");
-            double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba100");
+            //int []tablicaMrówek = new int [9] {5,10,40,80,100,140,160,180,200 };
+            for (int i = 0; i < 100; i++)
+            {
+                double[,] grafKońcowy; //= new double[5000, 5000];
+                                       //    double[,] grafKońcowy2 = new double[5000, 5000];
+                grafKońcowy = Generator.GenerujGraf(200, 3, grafPoczątkowy, 0, 1);
+                ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "graf200"+i);
+               // double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba100");
+            }
        //     double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 8, 69);
          //         System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
             //        Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 3,2, 50, 0.015, 0.00001, 0.5, 1.2, 10, 8,37 , 1500, 0.25, 1);
             //          System.Console.WriteLine("Mrówki: " + s.Max().koszt);
 
-            for (int j = 0; j < 100; j++)
+            /*for (int j = 0; j < 100; j++)
             {
 
 
@@ -50,7 +53,7 @@ namespace AlgorytmMrówkowy
 
                     }
                 
-            }
+            }*/
             //Console.ReadKey();
             /*for (int i = 1; i <= 6; i++)
             {
@@ -60,13 +63,26 @@ namespace AlgorytmMrówkowy
 
             }*/
 
-//              ModułObsługiPlików.GenerujPlikiDoTestów("próba52","proba50", 50,800, 0.00001, 0.5,1.2,15,37,8,0.25,1.5);
-            /*for (int i = 0; i < 150; i++)
+            //              ModułObsługiPlików.GenerujPlikiDoTestów("próba52","proba50", 50,800, 0.00001, 0.5,1.2,15,37,8,0.25,1.5);
+            /*double[] tabliceWyników = new double[150];
+            string[] tablicaNazwPliku = new string[150];
+            for (int j = 0; j < 100; j++)
             {
-                Statystyki s = new Statystyki();
-                s.wykonajAlgorytm("próba51"+i);
+                for (int i = 0; i < 150; i++)
+                {
+                    Statystyki s = new Statystyki();
+                   tabliceWyników[i]+= s.wykonajAlgorytm("próba51" + i);
+                }
             }
-           for (int i = 0; i < 150; i++)
+            for (int k=0;k<tabliceWyników.Length;k++)
+            {
+                using (FileStream fs = new FileStream(k + ".txt", FileMode.Append, FileAccess.Write))
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine("wynik: " + tabliceWyników[k]/100);
+                }
+            }*/
+           /*for (int i = 0; i < 150; i++)
             {
                 Statystyki s = new Statystyki();
                 s.wykonajAlgorytm("próba52" + i);
