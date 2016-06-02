@@ -32,6 +32,29 @@ namespace AlgorytmMrówkowy
                 }
             }
         }
+        public static void ZapiszDoPlikuYenSAlgorithm(string nazwapliku)
+        {
+            double[,] graf = OdczytajZPliku(nazwapliku);
+
+            using (FileStream fs = new FileStream(nazwapliku, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                sw.WriteLine(graf.GetLength(0));
+                int id = 0;
+                for (int i = 0; i < graf.GetLength(0); i++)
+                {
+                    for (int j = 0; j < graf.GetLength(0); j++)
+                    {
+                        if (j > i && graf[i, j] != 0)
+                        {
+                            sw.WriteLine(i + "\t" + j + "\t" + graf[i, j]);
+                            sw.WriteLine(j + "\t" + i + "\t" + graf[j, i]);
+                            id++;
+                        }
+                    }
+                }
+            }
+        }
         public static double[,] OdczytajZPliku(string nazwaPliku)
         {
             double[,] graf;
