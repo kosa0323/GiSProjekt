@@ -51,9 +51,10 @@ namespace AlgorytmMrówkowy
         }
 
 
-        public void wykonajAlgorytm(string plikKonfiguracujny)
+        public double wykonajAlgorytm(string nazwaGrafu,string plikKonfiguracujny)
         {
             wczytajParametryZPliku(plikKonfiguracujny);
+            sciezkaDoGrafu = nazwaGrafu;
             double[,] graf = ModułObsługiPlików.OdczytajZPliku(sciezkaDoGrafu);
             Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf,
                                                         alfa, beta,
@@ -70,8 +71,8 @@ namespace AlgorytmMrówkowy
                                                         wspolczynnikRownania5);
 
             TimeSpan czasWykonywania = AlgorytmMrówkowy.elapsedMs;
-
-            Encoding enc = Encoding.GetEncoding("Windows-1250");
+            return s.Max().koszt;
+           /* Encoding enc = Encoding.GetEncoding("Windows-1250");
             using (FileStream fs = new FileStream("WynikNowyPróba" + plikKonfiguracujny + ".txt", FileMode.Create))
             using (StreamWriter sw = new StreamWriter(fs, enc))
             {
@@ -90,15 +91,15 @@ namespace AlgorytmMrówkowy
                 sw.WriteLine("Koszt rozwiązania: " + s.Max().koszt);
                 
                 sw.WriteLine("Czas wykonywania algorytmu[mm:ss:fff]: " + new DateTime(czasWykonywania.Ticks).ToString("mm:ss.fff"));
-            }
+            }*/
         }
 
-        public void wykonajKilkukrotnieAlgorytm(int ile)
+     /*   public void wykonajKilkukrotnieAlgorytm(int ile)
         {
             for(int i = 0; i < ile; i++)
             {
                 wykonajAlgorytm("Parametry" + i);
             }
-        }
+        }*/
     }
 }

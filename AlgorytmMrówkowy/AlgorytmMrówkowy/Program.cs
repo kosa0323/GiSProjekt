@@ -36,10 +36,6 @@ namespace AlgorytmMrówkowy
             //        Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 3,2, 50, 0.015, 0.00001, 0.5, 1.2, 10, 8,37 , 1500, 0.25, 1);
             //          System.Console.WriteLine("Mrówki: " + s.Max().koszt);
 
-            List<double[,]> lista = new List<double[,]>();
-            for(int i = 0; i < 100; i++)
-                lista.Add(grafKońcowy = Generator.GenerujGraf(50, 3, grafPoczątkowy, 0, 1));
-
             /*for (int j = 0; j < 100; j++)
             {
                     Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 2, 1, 50, 0.15, 0.00009, 0.001, 1.1, 15, 8, 69,50, 0.25, 1.5);
@@ -61,13 +57,26 @@ namespace AlgorytmMrówkowy
 
             }*/
 
-//              ModułObsługiPlików.GenerujPlikiDoTestów("próba52","proba50", 50,800, 0.00001, 0.5,1.2,15,37,8,0.25,1.5);
-            /*for (int i = 0; i < 150; i++)
+            //              ModułObsługiPlików.GenerujPlikiDoTestów("próba52","proba50", 50,800, 0.00001, 0.5,1.2,15,37,8,0.25,1.5);
+            /*double[] tabliceWyników = new double[150];
+            string[] tablicaNazwPliku = new string[150];
+            for (int j = 0; j < 100; j++)
             {
-                Statystyki s = new Statystyki();
-                s.wykonajAlgorytm("próba51"+i);
+                for (int i = 0; i < 150; i++)
+                {
+                    Statystyki s = new Statystyki();
+                   tabliceWyników[i]+= s.wykonajAlgorytm("próba51" + i);
+                }
             }
-           for (int i = 0; i < 150; i++)
+            for (int k=0;k<tabliceWyników.Length;k++)
+            {
+                using (FileStream fs = new FileStream(k + ".txt", FileMode.Append, FileAccess.Write))
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine("wynik: " + tabliceWyników[k]/100);
+                }
+            }*/
+           /*for (int i = 0; i < 150; i++)
             {
                 Statystyki s = new Statystyki();
                 s.wykonajAlgorytm("próba52" + i);
