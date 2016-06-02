@@ -27,28 +27,29 @@ namespace AlgorytmMrówkowy
 
         public void wczytajParametryZPliku(string plik)
         {
-            Encoding enc = Encoding.GetEncoding("Windows-1250");
+  //         Encoding enc = Encoding.GetEncoding("Windows-1250");
             using (FileStream fs = new FileStream(plik + ".txt", FileMode.Open))
-            using (StreamReader sr = new StreamReader(fs, enc))
+            using (StreamReader sr = new StreamReader(fs/*, enc*/))
             {
                 //CultureInfo pt = CultureInfo.GetCultureInfo()
 
-                sciezkaDoGrafu = sr.ReadLine().Split(' ')[1];
-                alfa = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                beta = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                n = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                ro = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                pDaszkiem = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                tałMin = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                tałMax = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                fLambda = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                wezelStartowy = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                wezelKoncowy = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                liczbaIteracji = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                epsilon = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
-                wspolczynnikRownania5 = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.InvariantCulture);
+                sciezkaDoGrafu = sr.ReadLine().Split(' ')[2];
+                alfa = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                beta = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                n = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                ro = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                pDaszkiem = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                tałMin = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                tałMax = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                fLambda = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                wezelStartowy = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                wezelKoncowy = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                liczbaIteracji = Convert.ToInt32((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                epsilon = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
+                wspolczynnikRownania5 = Convert.ToDouble((sr.ReadLine()).Split(' ')[1], CultureInfo.GetCultureInfo("tr-TR"));
             }
         }
+
 
         public void wykonajAlgorytm(string plikKonfiguracujny)
         {
@@ -71,7 +72,7 @@ namespace AlgorytmMrówkowy
             TimeSpan czasWykonywania = AlgorytmMrówkowy.elapsedMs;
 
             Encoding enc = Encoding.GetEncoding("Windows-1250");
-            using (FileStream fs = new FileStream("Wynik" + plikKonfiguracujny + ".txt", FileMode.Create))
+            using (FileStream fs = new FileStream("WynikNowyPróba" + plikKonfiguracujny + ".txt", FileMode.Create))
             using (StreamWriter sw = new StreamWriter(fs, enc))
             {
                 sw.WriteLine("**********Parametry grafu*********");
