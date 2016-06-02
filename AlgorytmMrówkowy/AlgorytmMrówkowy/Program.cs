@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,25 +19,68 @@ namespace AlgorytmMrówkowy
                     if (j > i)
                     {
                         Random r = new Random(Guid.NewGuid().GetHashCode());
-                        double wagaLosowa = 20 * r.NextDouble();
+                        double wagaLosowa = r.NextDouble();
                         grafPoczątkowy[i, j] = wagaLosowa;
                         grafPoczątkowy[j, i] = wagaLosowa;
                     }
                 }
             }
-            double[,] grafKońcowy = new double[500, 500];
-            double[,] grafKońcowy2 = new double[500, 500];
-            grafKońcowy = Generator.GenerujGraf(500, 3, grafPoczątkowy, 0, 1);
-            ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba500");
-   //         double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba49");
-     //       double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 10, 34);
-      //      System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
-        //    Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 4,2, 400, 0.001, 0.000001, 0, 0.15, 10, 10,34 , 3500, 1.3, 2);
-          //  System.Console.WriteLine("Mrówki: " + s.Max().koszt);
+            int []tablicaMrówek = new int [9] {5,10,40,80,100,140,160,180,200 };
+            double[,] grafKońcowy; //= new double[5000, 5000];
+        //    double[,] grafKońcowy2 = new double[5000, 5000];
+  //          grafKońcowy = Generator.GenerujGraf(50, 3, grafPoczątkowy, 0, 1);
+            //ModułObsługiPlików.ZapiszDoPliku(grafKońcowy, "próba50");
+            double[,] graf = ModułObsługiPlików.OdczytajZPliku("próba100");
+       //     double kosztDijkstry = AlgorytmDijkstry.wykonajAlgorytm(graf, 8, 69);
+         //         System.Console.WriteLine("Disjkstra: " + kosztDijkstry);
+            //        Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 3,2, 50, 0.015, 0.00001, 0.5, 1.2, 10, 8,37 , 1500, 0.25, 1);
+            //          System.Console.WriteLine("Mrówki: " + s.Max().koszt);
+
+            for (int j = 0; j < 100; j++)
+            {
 
 
+               
+                    Stog s = AlgorytmMrówkowy.WykonajAlgorytm(graf, 2, 1, 50, 0.15, 0.00009, 0.001, 1.1, 15, 8, 69,50, 0.25, 1.5);
+                    using (FileStream fs = new FileStream("100razy100wierzch50iteracji2" + ".txt", FileMode.Append, FileAccess.Write))
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
 
-            System.Console.ReadKey();
+                        sw.WriteLine("wynik: " + s.Max().koszt);
+
+                    }
+                
+            }
+            //Console.ReadKey();
+            /*for (int i = 1; i <= 6; i++)
+            {
+                double[,] graf12 = ModułObsługiPlików.OdczytajZPliku("nowy"+i);
+                double kosztDijkstry2 = AlgorytmDijkstry.wykonajAlgorytm(graf, 8, 37);
+                System.Console.WriteLine("Disjkstra: " + kosztDijkstry2);
+
+            }*/
+
+//              ModułObsługiPlików.GenerujPlikiDoTestów("próba52","proba50", 50,800, 0.00001, 0.5,1.2,15,37,8,0.25,1.5);
+            /*for (int i = 0; i < 150; i++)
+            {
+                Statystyki s = new Statystyki();
+                s.wykonajAlgorytm("próba51"+i);
+            }
+           for (int i = 0; i < 150; i++)
+            {
+                Statystyki s = new Statystyki();
+                s.wykonajAlgorytm("próba52" + i);
+            }
+            for (int i = 0; i < 150; i++)
+            {
+                Statystyki s = new Statystyki();
+                s.wykonajAlgorytm("próba101" + i);
+            }
+            for (int i = 0; i < 150; i++)
+            {
+                Statystyki s = new Statystyki();
+                s.wykonajAlgorytm("próba102" + i);
+            }*/
         }
     }
 }
