@@ -50,6 +50,7 @@ namespace AlgorytmMrówkowy
             }
         }
 
+
         public void wykonajAlgorytm(string plikKonfiguracujny)
         {
             wczytajParametryZPliku(plikKonfiguracujny);
@@ -71,7 +72,7 @@ namespace AlgorytmMrówkowy
             TimeSpan czasWykonywania = AlgorytmMrówkowy.elapsedMs;
 
             Encoding enc = Encoding.GetEncoding("Windows-1250");
-            using (FileStream fs = new FileStream("Wynik" + plikKonfiguracujny + ".txt", FileMode.Create))
+            using (FileStream fs = new FileStream("WynikNowyPróba" + plikKonfiguracujny + ".txt", FileMode.Create))
             using (StreamWriter sw = new StreamWriter(fs, enc))
             {
                 sw.WriteLine("**********Parametry grafu*********");

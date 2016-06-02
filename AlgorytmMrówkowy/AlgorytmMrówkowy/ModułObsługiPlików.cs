@@ -10,6 +10,43 @@ namespace AlgorytmMrówkowy
 {
     class ModułObsługiPlików
     {
+        public static void GenerujPlikiDoTestów(string nazwaPliku,string nazwaGrafu,int liczbaMrówek, int liczbaIteracji, double pstwoRozwiązanie, double minimalneStężenie, double maksymalneStężenie,int częstotliwość, int węzełKońcowy, int węzełPoczątkowy, double Epsilon, double współczynnik )
+        {
+            int[] wartosciAlfa = new int[5] { 0, 1, 2, 3, 4 };
+            int[] wartosciBeta = new int[6] { 0, 1, 2, 4, 6, 8 };
+            double[] wartościRo = new double[5] { 0.01, 0.04, 0.15, 0.35, 0.5 };
+            int nazwa = 0;
+            for (int i = 0; i < wartosciAlfa.Length; i++)
+            {
+                for (int j=0;j<wartosciBeta.Length;j++)
+                {
+                    for (int k=0;k<wartościRo.Length;k++)
+                    {
+                        using (FileStream fs = new FileStream(nazwaPliku+nazwa+".txt", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                        using (StreamWriter sw = new StreamWriter(fs))
+                        {
+                            sw.WriteLine("Graf wejściowy: "+nazwaGrafu);
+                            sw.WriteLine("Alfa: " + wartosciAlfa[i]);
+                            sw.WriteLine("Beta: " + wartosciBeta[j]);
+                            sw.WriteLine("LiczbaMrówek: " + liczbaMrówek);
+                            sw.WriteLine("WspółczynnikParowania: "+wartościRo[k]);
+                            sw.WriteLine("PrawdopodobieństwoZnalezieniaRozwiazania: " + pstwoRozwiązanie);
+                            sw.WriteLine("MinimalnyPoziomStężeniaFeromonów: " + minimalneStężenie);
+                            sw.WriteLine("MaksymalnyPoziomStężeniaFeromonów: " + maksymalneStężenie);
+                            sw.WriteLine("Częstotliwość: " + częstotliwość);
+                            sw.WriteLine("WezelPoczatkowy: " + węzełPoczątkowy);
+                            sw.WriteLine("WezelKoncowy: "+węzełKońcowy);
+                            sw.WriteLine("LiczbaIteracji: "+liczbaIteracji);
+                            sw.WriteLine("Epsilon: " + Epsilon);
+                            sw.WriteLine("WspółczynnikRównania5: " + współczynnik);
+                        }
+                        nazwa++;
+                    }
+                }
+            }
+            
+        }
+
         public static void ZapiszDoPliku(double[,] graf, string nazwaPliku)
         {
             using (FileStream fs = new FileStream(nazwaPliku + ".txt", FileMode.OpenOrCreate, FileAccess.ReadWrite))
